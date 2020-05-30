@@ -1,0 +1,61 @@
+﻿@page "/CategoryManagement"
+@using MatBlazor
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using AzuxUI.Shared.Models
+@using AzuxUI.Shared.DataAccess
+@inject HttpClient Http;
+
+
+<h1>Category Management</h1>
+
+<EditForm Model="@category">
+    @*<DataAnnotationsValidator />*@
+    <ValidationSummary />
+    <div class="col-12 row">
+        <input class="form-control col-3" @bind="category.CategoryName" placeholder="Category" />
+        &nbsp;<ValidationMessage For="@(() => category.CategoryName)" />
+        <button class="btn btn-primary" @onclick="AddCategoryAsync">Add</button>
+    </div>
+    <br />
+</EditForm>
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@Categories" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowPaging="true">
+                <SfDataManager Url="@(ApiHelper.CategoryUrl)" CrossDomain="true" Adaptor="Adaptors.WebApiAdaptor"></SfDataManager>
+                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"></GridEditSettings>
+                <GridColumns>
+                    <GridColumn Field=@nameof(Category.CategoryName) HeaderText="Category Name" TextAlign="TextAlign.Left" EditType="EditType.DefaultEdit" IsPrimaryKey="true" Width="120"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    Category category = new Category();
+
+    List<Category> Categories = new List<Category>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        Categories = await GenericDataAccess.GetAsync<Category>(Category.DatabaseName);
+    }
+
+    private async void AddCategoryAsync()
+    {
+        if (category.CategoryName == "") return;
+        var response = await GenericDataAccess.AddAsync<Category>(Category.DatabaseName, category);
+        if (response != null)
+        {
+            Categories.Add(category);
+        }
+    }
+
+
+
+}

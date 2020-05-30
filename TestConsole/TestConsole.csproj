@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft.aspnet.webapi.cors" Version="5.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AzuxLib\AzuxLib.csproj" />
+    <ProjectReference Include="..\AzuxUI\Shared\AzuxUI.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

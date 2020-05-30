@@ -1,0 +1,39 @@
+﻿@page "/CategoryManagement"
+
+@using MatBlazor
+@using AzuxWebAssembly.Data
+@using AzuxLib.Models
+@inject HttpClient httpClient;
+
+
+<h1>Category Management</h1>
+
+<MatTextField @bind-Value="@category.CategoryName"></MatTextField>
+<MatButton OnClick="@(()=>AddCategoryAsync(category))" Raised ="true">Add</MatButton>
+
+
+
+
+
+
+@code {      
+
+    Category category = new Category();
+
+    List<Category> Categories = new List<Category>();
+
+    protected override Task OnInitializedAsync()
+    {
+        Categories = await httpClient.GetJsonAsync<List<Category>>()
+    }
+
+
+    private async Task AddCategoryAsync(Category newCategory)
+    {
+        HttpResponseMessage response =  await httpClient.PostAsJsonAsync(DataAccessAPIs.Category(), DataAccessAPIs.Category());
+        response.EnsureSuccessStatusCode();
+    }
+
+
+
+}

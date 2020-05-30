@@ -1,0 +1,21 @@
+﻿@page "/CategoryManagement"
+
+@using MatBlazor
+@using AzuxWebAssembly.Models
+@using AzuxWebAssembly.Data
+@using Newtonsoft.Json
+@inject HttpClient httpClient;
+
+
+<h1>Category Management</h1>
+
+<MatTextField @bind-Value="@category.CategoryName"></MatTextField>
+<MatButton OnClick="@AddCategory(category)" Raised ="true">Add</MatButton>
+@code {
+    Category category = new Category();
+    private async Task<HttpResponseMessage> AddCategory(Category newCategory)
+    {
+        return await httpClient.PostAsync(DataAccessAPIs.Category());
+    }
+
+}
