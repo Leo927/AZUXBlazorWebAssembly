@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{2E25C6F3-B765-48DA-B5CA-992A726DA110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzuxUI.Server", "AzuxUI\Server\AzuxUI.Server.csproj", "{7B4ADA19-75A5-4CEC-A031-C69468EB1155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzuxUI.Server", "AzuxUI\Server\AzuxUI.Server.csproj", "{7B4ADA19-75A5-4CEC-A031-C69468EB1155}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzuxUI.Client", "AzuxUI\Client\AzuxUI.Client.csproj", "{CADF6133-7A23-4BCB-979C-B529E838E197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzuxUI.Client", "AzuxUI\Client\AzuxUI.Client.csproj", "{CADF6133-7A23-4BCB-979C-B529E838E197}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzuxUI.Shared", "AzuxUI\Shared\AzuxUI.Shared.csproj", "{87C1959C-3884-4DAE-AC90-F859135259BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzuxUI.Shared", "AzuxUI\Shared\AzuxUI.Shared.csproj", "{87C1959C-3884-4DAE-AC90-F859135259BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

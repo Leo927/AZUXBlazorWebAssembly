@@ -14,6 +14,7 @@ namespace AzuxUI.Shared.Models
 
         [Required]
         [MaxLength(20,ErrorMessage ="CategoryName cannot be more than 20 characters.")]
+        [MinLength(1,ErrorMessage ="CategoryName has to be at least 1 character long.")]
         [DisplayName("Category Name")]
         public string CategoryName { get; set; }
 

@@ -9,25 +9,43 @@
 
 <h1>Category Management</h1>
 
-<EditForm Model="@category">
-    @*<DataAnnotationsValidator />*@
-    <ValidationSummary />
+
+
+<EditForm Model="@category" OnValidSubmit="HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
     <div class="col-12 row">
         <input class="form-control col-3" @bind="category.CategoryName" placeholder="Category" />
-        &nbsp;<ValidationMessage For="@(() => category.CategoryName)" />
-        <button class="btn btn-primary" @onclick="AddCategoryAsync">Add</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+    &nbsp;<ValidationMessage For="@(() => category.CategoryName)" />
+</EditForm>
+@if (postStatus == PostStatus.Success)
+{
+    <div>
+        <text class="alert-success row">@category.CategoryName has been added successfully</text>
     </div>
     <br />
-</EditForm>
+    <br />
+}
+else if (postStatus == PostStatus.Failed)
+{
+    <div>
+        <text class="alert-danger row">Failed to add @category.CategoryName </text>
+    </div>
+    <br />
+    <br />
+}
 
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid DataSource="@Categories" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowPaging="true">
-                <SfDataManager Url="@(ApiHelper.CategoryUrl)" CrossDomain="true" Adaptor="Adaptors.WebApiAdaptor"></SfDataManager>
+            <SfGrid @ref="categoryDataGrid" TValue="Category" AllowSelection="true" AllowFiltering="true" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowPaging="true">
+                <SfDataManager Url="@(ApiHelper.CategoryUrl)" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <GridSearchSettings Fields="@(new string[]{"Id","CategoryName"})"></GridSearchSettings>
                 <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"></GridEditSettings>
                 <GridColumns>
-                    <GridColumn Field=@nameof(Category.CategoryName) HeaderText="Category Name" TextAlign="TextAlign.Left" EditType="EditType.DefaultEdit" IsPrimaryKey="true" Width="120"></GridColumn>
+                    <GridColumn Field=@nameof(Category.Id) HeaderText="Id" TextAlign="TextAlign.Left" IsPrimaryKey="true" Width="30"></GridColumn>
+                    <GridColumn Field=@nameof(Category.CategoryName) HeaderText="Category Name" TextAlign="TextAlign.Left" EditType="EditType.DefaultEdit" IsPrimaryKey="false" Width="120"></GridColumn>
                 </GridColumns>
             </SfGrid>
         </div>
@@ -37,23 +55,51 @@
 
 @code {
 
+    SfGrid<Category> categoryDataGrid;
+
     Category category = new Category();
 
-    List<Category> Categories = new List<Category>();
+    List<Category> Categories { get; set; }
 
-    protected async override Task OnInitializedAsync()
+    private PostStatus postStatus = PostStatus.Undefined;
+
+    private enum PostStatus { Success, Failed, Undefined };
+
+    private async Task AddCategoryAsync()
     {
-        Categories = await GenericDataAccess.GetAsync<Category>(Category.DatabaseName);
+
+        try
+        {
+            HttpResponseMessage response = await Http.PostAsJsonAsync<Category>(ApiHelper.CategoryUrl, category);
+            if (response.IsSuccessStatusCode)
+            {
+                postStatus = PostStatus.Success;
+                categoryDataGrid.Refresh();
+            }
+            else
+                postStatus = PostStatus.Failed;
+        }
+        catch(Exception e)
+        {
+
+        }
+        finally
+        {
+
+        }
+
     }
 
-    private async void AddCategoryAsync()
+    private async Task HandleValidSubmitAsync()
     {
-        if (category.CategoryName == "") return;
-        var response = await GenericDataAccess.AddAsync<Category>(Category.DatabaseName, category);
-        if (response != null)
+        HttpResponseMessage response = await Http.PostAsJsonAsync<Category>(ApiHelper.CategoryUrl, category);
+        if (response.IsSuccessStatusCode)
         {
-            Categories.Add(category);
+            postStatus = PostStatus.Success;
+            categoryDataGrid.Refresh();
         }
+        else
+            postStatus = PostStatus.Failed;
     }
 
 
