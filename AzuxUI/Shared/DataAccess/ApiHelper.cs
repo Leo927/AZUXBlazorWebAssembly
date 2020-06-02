@@ -18,11 +18,13 @@ namespace AzuxUI.Shared.DataAccess
             ApiClient.DefaultRequestHeaders.Accept.Clear();
             ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             CategoryUrl = $"{ServerUrl}/api/{Category.DatabaseName}";
-
+            ProductUrl = $"{ServerUrl}/api/{Product.DatabaseName}";
         }
 
-        public static readonly string ServerUrl = "https://localhost:5001";
+        public static readonly string ServerUrl = "https://localhost:44365";
 
         public static string CategoryUrl { get; private set; }
+
+        public static string ProductUrl { get; private set; }
     }
 }
