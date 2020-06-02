@@ -17,10 +17,7 @@
                 <GridColumns>
                     <GridColumn Field=@nameof(Product.Id) HeaderText="Id" TextAlign="TextAlign.Left" IsPrimaryKey="true" Width="30"></GridColumn>
                     <GridColumn Field=@nameof(Product.ProductName) HeaderText="Product Name" TextAlign="TextAlign.Left" EditType="EditType.DefaultEdit" IsPrimaryKey="false" Width="50"></GridColumn>
-                    <GridForeignColumn TValue="Category" Field="@nameof(Category.Id)" HeaderText="Category" ForeignKeyValue="@nameof(Category.CategoryName)" TextAlign="TextAlign.Left" EditType="EditType.DropDownEdit" Width="50" AllowEditing="true">
-                        <Syncfusion.Blazor.Data.SfDataManager Url="@(ApiHelper.CategoryUrl)" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor">
-                        </Syncfusion.Blazor.Data.SfDataManager>
-                    </GridForeignColumn>
+                    <GridColumn Field=@(nameof(Product.Category)+"."+nameof(Category.CategoryName)) HeaderText="Product Name" TextAlign="TextAlign.Left" EditType="EditType.DropDownEdit" IsPrimaryKey="false" Width="50"></GridColumn>
                     <GridColumn Field=@nameof(Product.DefaultPrice) HeaderText="Default Price" TextAlign="TextAlign.Left" EditType="EditType.NumericEdit" IsPrimaryKey="false" Width="50"></GridColumn>
                     <GridColumn Field=@nameof(Product.MaxRetailPrice) HeaderText="Maximum Retail Price" TextAlign="TextAlign.Left" EditType="EditType.NumericEdit" IsPrimaryKey="false" Width="50"></GridColumn>
                 </GridColumns>
