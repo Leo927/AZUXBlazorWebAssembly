@@ -33,7 +33,7 @@
 @code {
     SfGrid<Product> productDataGrid;
 
-    List<Category> Categories;
+    private static List<Category> Categories;
 
     private Query query;
 
@@ -44,6 +44,6 @@
 
     public object CategoryIDEditParams = new
     {
-@@params = new SfDropDownList<string, Category>() { DataSource = @LocalData, AllowFiltering = true, Query = new Query(), Fields = new FieldSettingsModel() { Text = "ShipCountry", Value = "ShipCountry" } }
+@@params = new SfDropDownList<string, Category>() { DataSource = Categories, AllowFiltering = true, Query = new Query(), Fields = new FieldSettingsModel() { Text = "ShipCountry", Value = "ShipCountry" } }
 };
 }
