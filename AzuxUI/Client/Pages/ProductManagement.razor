@@ -39,11 +39,6 @@
 
     protected override void OnInitialized()
     {
-        query = new Query().Expand(new List<string>() { nameof(Category) });
-        var response = Http.GetAsync(ApiHelper.CategoryUrl);
-        if (!response.IsCompletedSuccessfully) throw new Exception("Fail to fetch Categories");
-        response.Result.Content.ReadFromJsonAsync<>
-        Categories = Http.GetAsync(ApiHelper.CategoryUrl);
         base.OnInitialized();
     }
 
