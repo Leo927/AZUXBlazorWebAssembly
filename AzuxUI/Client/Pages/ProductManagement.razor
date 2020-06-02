@@ -2,6 +2,7 @@
 @using MatBlazor
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
 @using AzuxUI.Shared.Models
 @using AzuxUI.Shared.DataAccess
 @inject HttpClient Http;
@@ -11,13 +12,16 @@
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid @ref="productDataGrid" TValue="Product" Query="query" AllowSelection="true" AllowFiltering="true" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowPaging="true">
+            <SfGrid @ref="productDataGrid" TValue="Product" Query="query" AllowSelection="true"
+                    AllowFiltering="true" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true"
+                    ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})"
+                    AllowPaging="true">
                 <SfDataManager Url="@(ApiHelper.ProductUrl)" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"></GridEditSettings>
+                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
                     <GridColumn Field=@nameof(Product.Id) HeaderText="Id" TextAlign="TextAlign.Left" IsPrimaryKey="true" Width="30"></GridColumn>
                     <GridColumn Field=@nameof(Product.ProductName) HeaderText="Product Name" TextAlign="TextAlign.Left" EditType="EditType.DefaultEdit" IsPrimaryKey="false" Width="50"></GridColumn>
-                    <GridColumn Field=@(nameof(Product.Category)+"."+nameof(Category.CategoryName)) HeaderText="Product Name" TextAlign="TextAlign.Left" EditType="EditType.DropDownEdit" IsPrimaryKey="false" Width="50"></GridColumn>
+                    <GridColumn Field=@nameof(Product.CategoryId) HeaderText="Category" EditType="EditType.DropDownEdit" Edit="@CategoryIDEditParams" Width="120"></GridColumn>
                     <GridColumn Field=@nameof(Product.DefaultPrice) HeaderText="Default Price" TextAlign="TextAlign.Left" EditType="EditType.NumericEdit" IsPrimaryKey="false" Width="50"></GridColumn>
                     <GridColumn Field=@nameof(Product.MaxRetailPrice) HeaderText="Maximum Retail Price" TextAlign="TextAlign.Left" EditType="EditType.NumericEdit" IsPrimaryKey="false" Width="50"></GridColumn>
                 </GridColumns>
@@ -29,11 +33,22 @@
 @code {
     SfGrid<Product> productDataGrid;
 
+    List<Category> Categories;
+
     private Query query;
 
     protected override void OnInitialized()
     {
         query = new Query().Expand(new List<string>() { nameof(Category) });
+        var response = Http.GetAsync(ApiHelper.CategoryUrl);
+        if (!response.IsCompletedSuccessfully) throw new Exception("Fail to fetch Categories");
+        response.Result.Content.ReadFromJsonAsync<>
+        Categories = Http.GetAsync(ApiHelper.CategoryUrl);
         base.OnInitialized();
     }
+
+    public object CategoryIDEditParams = new
+    {
+@@params = new SfDropDownList<string, Category>() { DataSource = @LocalData, AllowFiltering = true, Query = new Query(), Fields = new FieldSettingsModel() { Text = "ShipCountry", Value = "ShipCountry" } }
+};
 }

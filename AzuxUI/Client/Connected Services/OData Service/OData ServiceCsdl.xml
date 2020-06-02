@@ -1,0 +1,213 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="AzuxServer.Models" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Category">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CategoryName" Type="Edm.String" />
+        <NavigationProperty Name="Product" Type="Collection(AzuxServer.Models.Product)" />
+        <NavigationProperty Name="Scrap" Type="Collection(AzuxServer.Models.Scrap)" />
+      </EntityType>
+      <EntityType Name="Product">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ProductName" Type="Edm.String" />
+        <Property Name="CategoryId" Type="Edm.Int32" />
+        <Property Name="DefaultPrice" Type="Edm.Decimal" />
+        <Property Name="MaxRetailPrice" Type="Edm.Decimal" />
+        <NavigationProperty Name="Category" Type="AzuxServer.Models.Category">
+          <ReferentialConstraint Property="CategoryId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="ProductEntry" Type="Collection(AzuxServer.Models.ProductEntry)" />
+      </EntityType>
+      <EntityType Name="Scrap">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ScrapName" Type="Edm.String" />
+        <Property Name="DefaultPrice" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="CategoryId" Type="Edm.Int32" />
+        <NavigationProperty Name="Category" Type="AzuxServer.Models.Category">
+          <ReferentialConstraint Property="CategoryId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="ScrapEntry" Type="Collection(AzuxServer.Models.ScrapEntry)" />
+      </EntityType>
+      <EntityType Name="ProductEntry">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ProductId" Type="Edm.Int32" />
+        <Property Name="Quantity" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PerUnitPrice" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="ProRateDiscountAmount" Type="Edm.Decimal" />
+        <Property Name="TradeDiscountAmount" Type="Edm.Decimal" />
+        <Property Name="CashDiscountAmount" Type="Edm.Decimal" />
+        <Property Name="SaleId" Type="Edm.Int32" />
+        <NavigationProperty Name="Product" Type="AzuxServer.Models.Product">
+          <ReferentialConstraint Property="ProductId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Sale" Type="AzuxServer.Models.Sale">
+          <ReferentialConstraint Property="SaleId" ReferencedProperty="Id" />
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Sale">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="BillingAddressId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ShippingAddressId" Type="Edm.Int32" />
+        <Property Name="SaleTime" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="IsReverseCharge" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="CashDiscountAmount" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="RoundOffAmount" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="TaxId" Type="Edm.Int32" />
+        <Property Name="TransportNode" Type="Edm.String" />
+        <Property Name="VehicleNumber" Type="Edm.String" />
+        <Property Name="TransportModeId" Type="Edm.Int32" />
+        <NavigationProperty Name="Address" Type="AzuxServer.Models.Address" />
+        <NavigationProperty Name="Address1" Type="AzuxServer.Models.Address" />
+        <NavigationProperty Name="Payment" Type="Collection(AzuxServer.Models.Payment)" />
+        <NavigationProperty Name="ProductEntry" Type="Collection(AzuxServer.Models.ProductEntry)" />
+        <NavigationProperty Name="Tax" Type="AzuxServer.Models.Tax">
+          <ReferentialConstraint Property="TaxId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="TransportMode" Type="AzuxServer.Models.TransportMode">
+          <ReferentialConstraint Property="TransportModeId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="ScrapEntry" Type="Collection(AzuxServer.Models.ScrapEntry)" />
+      </EntityType>
+      <EntityType Name="Address">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PersonId" Type="Edm.Int32" />
+        <Property Name="GSTIN" Type="Edm.String" />
+        <Property Name="ProvinceId" Type="Edm.Int32" />
+        <Property Name="CityId" Type="Edm.Int32" />
+        <NavigationProperty Name="City" Type="AzuxServer.Models.City">
+          <ReferentialConstraint Property="CityId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Person" Type="AzuxServer.Models.Person">
+          <ReferentialConstraint Property="PersonId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Province" Type="AzuxServer.Models.Province">
+          <ReferentialConstraint Property="ProvinceId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Sale" Type="Collection(AzuxServer.Models.Sale)" />
+        <NavigationProperty Name="Sale1" Type="Collection(AzuxServer.Models.Sale)" />
+      </EntityType>
+      <EntityType Name="City">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CityName" Type="Edm.String" />
+        <NavigationProperty Name="Address" Type="Collection(AzuxServer.Models.Address)" />
+      </EntityType>
+      <EntityType Name="Person">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PersonName" Type="Edm.String" />
+        <Property Name="PhoneNumber" Type="Edm.String" />
+        <Property Name="Email" Type="Edm.String" />
+        <NavigationProperty Name="Address" Type="Collection(AzuxServer.Models.Address)" />
+      </EntityType>
+      <EntityType Name="Province">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ProvinceName" Type="Edm.String" />
+        <Property Name="ProvinceCode" Type="Edm.Int32" />
+        <NavigationProperty Name="Address" Type="Collection(AzuxServer.Models.Address)" />
+      </EntityType>
+      <EntityType Name="Payment">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PaymentMethodId" Type="Edm.Int32" />
+        <Property Name="PaymentAmount" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="Comment" Type="Edm.String" />
+        <Property Name="SaleId" Type="Edm.Int32" />
+        <NavigationProperty Name="PaymentMethod" Type="AzuxServer.Models.PaymentMethod">
+          <ReferentialConstraint Property="PaymentMethodId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Sale" Type="AzuxServer.Models.Sale">
+          <ReferentialConstraint Property="SaleId" ReferencedProperty="Id" />
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="PaymentMethod">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="PaymentMethodName" Type="Edm.String" />
+        <NavigationProperty Name="Payment" Type="Collection(AzuxServer.Models.Payment)" />
+      </EntityType>
+      <EntityType Name="Tax">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="CgstRate" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="SgstRate" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="IgstRate" Type="Edm.Decimal" Nullable="false" />
+        <NavigationProperty Name="Sale" Type="Collection(AzuxServer.Models.Sale)" />
+      </EntityType>
+      <EntityType Name="TransportMode">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="TransportModeName" Type="Edm.String" />
+        <NavigationProperty Name="Sale" Type="Collection(AzuxServer.Models.Sale)" />
+      </EntityType>
+      <EntityType Name="ScrapEntry">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="ScrapId" Type="Edm.Int32" />
+        <Property Name="PerUnitPrice" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="Quantity" Type="Edm.Int32" Nullable="false" />
+        <Property Name="SaleId" Type="Edm.Int32" />
+        <NavigationProperty Name="Sale" Type="AzuxServer.Models.Sale">
+          <ReferentialConstraint Property="SaleId" ReferencedProperty="Id" />
+        </NavigationProperty>
+        <NavigationProperty Name="Scrap" Type="AzuxServer.Models.Scrap">
+          <ReferentialConstraint Property="ScrapId" ReferencedProperty="Id" />
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="ProductDTO" BaseType="AzuxServer.Models.Product" />
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="Container">
+        <EntitySet Name="Categories" EntityType="AzuxServer.Models.Category">
+          <NavigationPropertyBinding Path="Product" Target="Products" />
+          <NavigationPropertyBinding Path="Scrap" Target="Scrap" />
+        </EntitySet>
+        <EntitySet Name="Products" EntityType="AzuxServer.Models.Product">
+          <NavigationPropertyBinding Path="Category" Target="Categories" />
+          <NavigationPropertyBinding Path="ProductEntry" Target="ProductEntry" />
+        </EntitySet>
+        <EntitySet Name="Scrap" EntityType="AzuxServer.Models.Scrap">
+          <NavigationPropertyBinding Path="Category" Target="Categories" />
+        </EntitySet>
+        <EntitySet Name="ProductEntry" EntityType="AzuxServer.Models.ProductEntry">
+          <NavigationPropertyBinding Path="Product" Target="Products" />
+        </EntitySet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

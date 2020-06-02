@@ -39,11 +39,14 @@ else if (postStatus == PostStatus.Failed)
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid @ref="categoryDataGrid" TValue="Category" AllowSelection="true" AllowFiltering="true" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})" AllowPaging="true">
+            <SfGrid @ref="categoryDataGrid" TValue="Category" AllowSelection="true" AllowFiltering="true" 
+                    AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" 
+                    ContextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel", "FirstPage", "PrevPage","LastPage", "NextPage"})" 
+                    AllowPaging="true" Toolbar="@(new List<string>() { "Add"})">
                 <SfDataManager Url="@(ApiHelper.CategoryUrl)" CrossDomain="true" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"></GridEditSettings>
+                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" Mode="EditMode.Dialog"></GridEditSettings>
                 <GridColumns>
-                    <GridColumn Field=@nameof(Category.Id) HeaderText="Id" TextAlign="TextAlign.Left" IsPrimaryKey="true" Width="30"></GridColumn>
+                    
                     <GridColumn Field=@nameof(Category.CategoryName) HeaderText="Category Name" TextAlign="TextAlign.Left" EditType="EditType.DefaultEdit" IsPrimaryKey="false" Width="120"></GridColumn>
                 </GridColumns>
             </SfGrid>
